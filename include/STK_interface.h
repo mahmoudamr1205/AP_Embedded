@@ -14,7 +14,7 @@
  * Disable Systick interrupt
  * Disable Systick
  */
-void MSTK_voidInit(void);
+void MSTK_VoidInit(void);
 
 /*
  *

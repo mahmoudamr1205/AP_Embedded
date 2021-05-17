@@ -5,7 +5,7 @@
  *      Author: Mahmoud Amr
  */
 
-
+#include <stdio.h>
 
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
@@ -16,6 +16,8 @@
 
 #include "GPIO_interface.h"
 #include "STK_interface.h"
+
+#include "ALARM_interface.h"
 
 
 
@@ -29,9 +31,9 @@
 
 
 	*/
-void HLCD_voidInit(void){
+void HLCD_VoidInit(void){
 
-		MSTK_voidDelay_ms(50);
+		MSTK_voidDelay_ms(2000);
 
 	#ifdef four_bits_mode
 		MGPIO_VoidSetPinDirection(LCD_PORT , EN , OUTPUT_SPEED_2MHZ_PP);
@@ -42,8 +44,9 @@ void HLCD_voidInit(void){
 		MGPIO_VoidSetPinDirection(LCD_PORT , D7 , OUTPUT_SPEED_2MHZ_PP);
 
 		HLCD_send_command(0x02);
+		MSTK_voidDelay_ms(2);
 		HLCD_send_command(function_set_4BIT);
-		MSTK_voidDelay_ms(15);
+		MSTK_voidDelay_ms(10);
 
 
 	#endif
@@ -55,20 +58,20 @@ void HLCD_voidInit(void){
 		#endif
 
 		HLCD_send_command(display_on_cursor_on_B_off);
-		MSTK_voidDelay_ms(15);
+		MSTK_voidDelay_ms(10);
 		HLCD_send_command(display_clear);
-		MSTK_voidDelay_ms(15);
+		MSTK_voidDelay_ms(10);
 		HLCD_send_command(entery_mode);
-		MSTK_voidDelay_ms(15);
+		MSTK_voidDelay_ms(100);
+
 	}
 
 
 static void send_falling_edge(void){
 
 	MGPIO_VoidSetPinValue(LCD_PORT, EN, HIGH);
-	MSTK_voidDelay_ms(50);
+	MSTK_voidDelay_ms(2);
 	MGPIO_VoidSetPinValue(LCD_PORT, EN, LOW);
-	MSTK_voidDelay_ms(50);
 
 }
 
@@ -108,7 +111,7 @@ void HLCD_send_command(u8 command){
 	MGPIO_VoidSetPinValue(LCD_PORT, RS, LOW);
 	send_falling_edge();
 
-	MSTK_voidDelay_ms(5);
+
 
 #endif
 
@@ -159,7 +162,7 @@ void HLCD_send_char(u8 Data){
 
 	MGPIO_VoidSetPinValue(LCD_PORT, RS, HIGH);
 	send_falling_edge();
-	MSTK_voidDelay_ms(2);
+
 
 #endif
 
@@ -286,7 +289,7 @@ void HLCD_clear(){
 #ifdef four_bits_mode
 
 	HLCD_send_command(display_clear);
-	MSTK_voidDelay_ms(10);
+
 #endif
 
 		#ifdef eight_bits_mode
@@ -317,55 +320,67 @@ void HLCD_clear(){
 
 
 void HLCD_send_number(int num){
-#ifdef four_bits_mode
+
 	/*  unsigned int has values: 0 to 65535
 		int has values: -32768 to +32767
 	*/
 
-	/*char str[7];
+	u8 str[7];
 	sprintf(str, "%d", num);
-	LCD_send_string(str);*/
-
-#endif
-
-#ifdef eight_bits_mode
+	HLCD_send_string(str);
 
 
-#endif
+
+
+
 
 }
 
 
 
 void HLCD_send_realnumber(float64 num){
-#ifdef four_bits_mode
 
 
-#endif
-
-
-#ifdef eight_bits_mode
-
-
-#endif
-
-/*
-		char str[16];
-		char *tmpsign =(num <0)? "-" : "";
-		char tmpval =(num <0)? -num : num;
+		u8 str[16];
+		u8 *tmpsign =(num <0)? "-" : "";
+		u8 tmpval =(num <0)? -num : num;
 		int tmpint_1 = tmpval;		//Get the integer (678)
 		float32 tmpfrac = tmpval - tmpint_1 ; //Get fraction (0.0123)
 		int tmpint_2 = tmpfrac * 1000;  //turn into integer (123)
 		//print as parts, note that you need 0-padding for fractional bit.
 		sprintf(str, "%s%d.%04d", tmpsign, tmpint_1, tmpint_2);
-		LCD_send_string(str);
-		*/
+		HLCD_send_string(str);
+
 }
 
 
 
 
+void HLCD_voidStart_Page(u8* ptr){
 
+	MSTK_voidDelay_ms(100);
+	HLCD_movecursor(1,1);
+	HLCD_send_string(ptr);
+	//delay for view
+	MSTK_voidDelay_ms(1000);
+
+	//  LCD ALARM START Machine
+	HALARM_ON();
+	MSTK_voidDelay_ms(35);
+	HALARM_OFF();
+	MSTK_voidDelay_ms(80);
+	HALARM_ON();
+	MSTK_voidDelay_ms(35);
+	HALARM_OFF();
+	MSTK_voidDelay_ms(100);
+	HALARM_ON();
+
+	// ALARM END
+
+	HLCD_clear();
+	MSTK_voidDelay_ms(100);
+	HALARM_OFF();
+}
 
 
 

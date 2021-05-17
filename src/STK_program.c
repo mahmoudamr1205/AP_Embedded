@@ -35,7 +35,7 @@ void SysTick_Handler(void){
  * Disable Systick interrupt
  * Disable Systick
  */
-void MSTK_voidInit(void){
+void MSTK_VoidInit(void){
 
 #if MSTK_CLK_SRC == MSTK_SRC_AHB
     /* Disable STK - Disable STK Interrupt - Set clock source AHB */

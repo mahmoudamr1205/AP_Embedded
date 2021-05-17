@@ -20,14 +20,14 @@
 
 #ifdef  four_bits_mode
 
-#define RS 			PIN0
-#define EN 			PIN1
-#define D4			PIN2
-#define D5			PIN3
-#define D6			PIN4
-#define D7			PIN5
+#define RS 			PIN10
+#define EN 			PIN11
+#define D4			PIN12
+#define D5			PIN13
+#define D6			PIN14
+#define D7			PIN15
 
-#define LCD_PORT	GPIOA
+#define LCD_PORT	GPIOB
 
 #endif
 

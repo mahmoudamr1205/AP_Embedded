@@ -21,7 +21,7 @@ Function Description : initialization  LCD in 8 bit mode
 
 
 */
-void HLCD_voidInit(void);
+void HLCD_VoidInit(void);
 
 
 /*
@@ -54,7 +54,7 @@ Function Description : i
 
 
 */
-void HLCD_send_string(u8* ptr);
+void HLCD_send_string(u8* string_);
 
 
 /*
@@ -72,7 +72,7 @@ void HLCD_send_realnumber(float64 num);
 void HLCD_clear();
 void HLCD_movecursor(char row,char coloumn);
 
-
+void HLCD_voidStart_Page(u8* ptr);
 
 
 #endif /* INCLUDE_LCD2004_INTERFACE_H_ */

@@ -18,7 +18,7 @@
 #define SET_BIT(PORT,bit) 	PORT |= (1<<bit)
 #define TOG_BIT(PORT,bit)	PORT ^= (1<<bit) //TOGGLE_BIT
 #define GET_BIT(PORT,bit) 	((PORT>>bit) & 1)
-
+//#define GET_BIT(PORT,bit) 	((PORT&(1<<bit))>>bit)
 
 
 #define is_bit_set(Port,bit) 	(Port&(1<<bit))>>bit
